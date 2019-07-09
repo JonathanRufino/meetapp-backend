@@ -20,7 +20,7 @@ Abaixo estão descritas as funcionalidades que você deve adicionar em sua aplic
 
 - [x] Crie uma rota para listar os meetups que são organizados pelo usuário logado.
 
-- [ ] O usuário deve poder cancelar meetups organizados por ele e que ainda não aconteceram. O cancelamento deve deletar o meetup da base de dados.
+- [x] O usuário deve poder cancelar meetups organizados por ele e que ainda não aconteceram. O cancelamento deve deletar o meetup da base de dados.
 
 ### Inscrição no meetup
 
