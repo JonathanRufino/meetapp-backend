@@ -2,8 +2,30 @@ import { isBefore, parse } from 'date-fns';
 import * as yup from 'yup';
 
 import Meetup from '../models/Meetup';
+import File from '../models/File';
 
 class MeetupController {
+  async index(req, res) {
+    const { page = 1 } = req.query;
+
+    const meetups = await Meetup.findAll({
+      where: { user_id: req.userId },
+      order: ['date'],
+      attributes: ['id', 'title', 'description', 'location', 'date'],
+      limit: 20,
+      offset: (page - 1) * 20,
+      include: [
+        {
+          model: File,
+          as: 'banner',
+          attributes: ['id', 'name', 'path'],
+        },
+      ],
+    });
+
+    return res.json(meetups);
+  }
+
   async store(req, res) {
     const schema = yup.object().shape({
       title: yup.string().required(),
