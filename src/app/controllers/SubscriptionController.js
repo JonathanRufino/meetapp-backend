@@ -1,6 +1,7 @@
-import { isBefore, parse } from 'date-fns';
+import { isBefore, parse, format } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 
-import Mail from '../../lib/Mail';
+import Mail from '../lib/Mail';
 
 import User from '../models/User';
 import Meetup from '../models/Meetup';
@@ -8,7 +9,7 @@ import Subscription from '../models/Subscription';
 
 class SubscriptionController {
   async store(req, res) {
-    const { userId } = req;
+    const user = await User.findByPk(req.userId);
 
     const meetup = await Meetup.findByPk(req.params.meetupId, {
       include: [
@@ -24,7 +25,7 @@ class SubscriptionController {
       return res.status(400).json({ error: 'Meetup not found.' });
     }
 
-    if (meetup.user_id === userId) {
+    if (meetup.user_id === user.id) {
       return res
         .status(401)
         .json({ error: "Can't subscribe to your own meetup." });
@@ -35,7 +36,7 @@ class SubscriptionController {
     }
 
     const hasSubscription = await Subscription.findOne({
-      where: { user_id: userId, meetup_id: meetup.id },
+      where: { user_id: user.id, meetup_id: meetup.id },
     });
 
     if (hasSubscription) {
@@ -45,7 +46,7 @@ class SubscriptionController {
     }
 
     const hasSubscriptionSameTime = await Subscription.findOne({
-      where: { user_id: userId },
+      where: { user_id: user.id },
       include: [
         {
           model: Meetup,
@@ -63,14 +64,27 @@ class SubscriptionController {
     }
 
     const subscription = await Subscription.create({
-      user_id: userId,
+      user_id: user.id,
       meetup_id: meetup.id,
     });
 
     await Mail.sendMail({
       to: `${meetup.user.name} <${meetup.user.email}>`,
       subject: 'Nova inscrição',
-      text: `Um novo usuário se inscreveu no seu evento ${meetup.title}`,
+      template: 'subscription',
+      context: {
+        meetup: {
+          title: meetup.title,
+          user: meetup.user.name,
+          date: format(meetup.date, 'DD [de] MMMM[, às] H:mm[h]', {
+            locale: pt,
+          }),
+        },
+        subscriber: {
+          name: user.name,
+          email: user.email,
+        },
+      },
     });
 
     return res.json(subscription);
