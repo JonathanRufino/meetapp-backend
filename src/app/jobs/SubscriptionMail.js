@@ -1,7 +1,7 @@
 import { format, parse } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
-import Mail from '../lib/Mail';
+import Mail from '../../lib/Mail';
 
 class SubscriptionMail {
   get key() {

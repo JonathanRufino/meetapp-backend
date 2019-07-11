@@ -1,7 +1,7 @@
 import { isBefore, parse } from 'date-fns';
 
 import SubscriptionMail from '../jobs/SubscriptionMail';
-import Queue from '../lib/Queue';
+import Queue from '../../lib/Queue';
 
 import User from '../models/User';
 import Meetup from '../models/Meetup';
