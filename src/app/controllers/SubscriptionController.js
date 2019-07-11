@@ -1,7 +1,7 @@
-import { isBefore, parse, format } from 'date-fns';
-import pt from 'date-fns/locale/pt';
+import { isBefore, parse } from 'date-fns';
 
-import Mail from '../lib/Mail';
+import SubscriptionMail from '../jobs/SubscriptionMail';
+import Queue from '../lib/Queue';
 
 import User from '../models/User';
 import Meetup from '../models/Meetup';
@@ -68,23 +68,9 @@ class SubscriptionController {
       meetup_id: meetup.id,
     });
 
-    await Mail.sendMail({
-      to: `${meetup.user.name} <${meetup.user.email}>`,
-      subject: 'Nova inscrição',
-      template: 'subscription',
-      context: {
-        meetup: {
-          title: meetup.title,
-          user: meetup.user.name,
-          date: format(meetup.date, 'DD [de] MMMM[, às] H:mm[h]', {
-            locale: pt,
-          }),
-        },
-        subscriber: {
-          name: user.name,
-          email: user.email,
-        },
-      },
+    await Queue.add(SubscriptionMail.key, {
+      meetup,
+      user,
     });
 
     return res.json(subscription);
