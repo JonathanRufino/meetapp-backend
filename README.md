@@ -36,7 +36,7 @@ Abaixo estão descritas as funcionalidades que você deve adicionar em sua aplic
 
 ### Listagem de meetups
 
-- [ ] Crie uma rota para listar os meetups com filtro por data (não por hora), os resultados dessa listagem devem vir paginados em 10 itens por página. Abaixo tem um exemplo de chamada para a rota de listagem dos meetups:
+- [x] Crie uma rota para listar os meetups com filtro por data (não por hora), os resultados dessa listagem devem vir paginados em 10 itens por página. Abaixo tem um exemplo de chamada para a rota de listagem dos meetups:
 
 ```
 http://localhost:3333/meetups?date=2019-07-01&page=2
@@ -44,7 +44,7 @@ http://localhost:3333/meetups?date=2019-07-01&page=2
 
 Nesse exemplo, listaremos a página 2 dos meetups que acontecerão no dia 01 de Julho.
 
-- [ ] Nessa listagem retorne também os dados do organizador.
+- [x] Nessa listagem retorne também os dados do organizador.
 
 ### Listagem de inscrições
 
