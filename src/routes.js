@@ -31,6 +31,8 @@ routes.post('/meetups/:meetupId/subscriptions', SubscriptionController.store);
 
 routes.get('/organizing', OrganizingController.index);
 
+routes.get('/subscriptions', SubscriptionController.index);
+
 routes.post('/files', upload.single('file'), FileController.store);
 
 export default routes;
