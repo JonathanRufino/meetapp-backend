@@ -30,7 +30,7 @@ class SubscriptionController {
             {
               model: File,
               as: 'banner',
-              attributes: ['id', 'url'],
+              attributes: ['id', 'url', 'path'],
             },
           ],
           where: {
@@ -113,6 +113,39 @@ class SubscriptionController {
     });
 
     return res.json(subscription);
+  }
+
+  async delete(req, res) {
+    const subscription = await Subscription.findByPk(req.params.id, {
+      include: [
+        {
+          model: Meetup,
+          as: 'meetup',
+          attributes: ['date'],
+        },
+      ],
+    });
+
+    if (!subscription) {
+      return res.status(404).json({ error: 'Subscription not found' });
+    }
+
+    if (subscription.user_id !== req.userId) {
+      return res.status(401).json({
+        error: "You don't have permission to cancel this subscription.",
+      });
+    }
+
+    if (isBefore(parse(subscription.meetup.date), new Date())) {
+      return res.status(401).json({
+        error:
+          "You can't cancel subscriptions to events that have already happened.",
+      });
+    }
+
+    await subscription.destroy();
+
+    return res.json({});
   }
 }
 
