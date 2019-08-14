@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "queue": "nodemon src/queue.js",
-    "docker": "docker start database redisbarber"
+    "docker": "docker start database redisbarber",
+    "start": "node src/server.js"
   },
   "dependencies": {
     "@sentry/node": "5.4.3",
