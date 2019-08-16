@@ -4,16 +4,20 @@
   "main": "index.js",
   "license": "MIT",
   "engines": {
-    "node": "10.x"
+    "node": "8.x"
   },
   "scripts": {
     "dev": "nodemon src/server.js",
     "queue": "nodemon src/queue.js",
     "docker": "docker start database redisbarber",
-    "start": "babel-node src/server.js"
+    "start": "babel-node src/server.js",
+    "build": "sucrase .src -d ./dist --transform imports",
+    "test": "jest"
   },
   "dependencies": {
     "@sentry/node": "5.4.3",
+    "@sucrase/jest-plugin": "^2.0.0",
+    "@types/jest": "^24.0.17",
     "bcryptjs": "^2.4.3",
     "bee-queue": "^1.2.2",
     "cors": "^2.8.5",
@@ -22,11 +26,12 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-handlebars": "^3.1.0",
+    "jest": "^24.9.0",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.1",
     "nodemailer": "^6.2.1",
     "nodemailer-express-handlebars": "^3.0.0",
-    "pg": "^7.11.0",
+    "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.9.0",
     "youch": "^2.0.10",
