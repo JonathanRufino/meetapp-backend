@@ -12,7 +12,7 @@
     "docker": "docker start database redisbarber",
     "start": "babel-node src/server.js",
     "build": "sucrase .src -d ./dist --transform imports",
-    "test": "jest"
+    "test": "NODE_ENV=test jest"
   },
   "dependencies": {
     "@sentry/node": "5.4.3",

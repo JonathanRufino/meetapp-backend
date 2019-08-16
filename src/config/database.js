@@ -1,7 +1,7 @@
-require('dotenv/config');
+require('../bootstrap');
 
 module.exports = {
-  dialect: 'postgres',
+  dialect: process.env.DB_DIALECT || 'postgres',
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
   username: process.env.DB_USER,
