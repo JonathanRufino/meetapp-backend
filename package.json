@@ -10,7 +10,7 @@
     "dev": "nodemon src/server.js",
     "queue": "nodemon src/queue.js",
     "docker": "docker start database redisbarber",
-    "start": "node src/server.js"
+    "start": "babel-node src/server.js"
   },
   "dependencies": {
     "@sentry/node": "5.4.3",
@@ -33,6 +33,9 @@
     "yup": "^0.27.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^6.0.0",
