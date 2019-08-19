@@ -58,16 +58,20 @@ class MeetupController {
       return res.status(401).json({ error: 'Past dates are not allowed.' });
     }
 
-    const meetup = await Meetup.create({
-      title,
-      description,
-      location,
-      date,
-      banner_id,
-      user_id: req.userId,
-    });
+    try {
+      const meetup = await Meetup.create({
+        title,
+        description,
+        location,
+        date,
+        banner_id,
+        user_id: req.userId,
+      });
 
-    return res.json(meetup);
+      return res.json(meetup);
+    } catch (err) {
+      return res.status(400).json({ error: 'Invalid banner.' });
+    }
   }
 
   async update(req, res) {
