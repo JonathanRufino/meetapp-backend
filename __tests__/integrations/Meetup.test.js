@@ -127,4 +127,47 @@ describe('Meetup', () => {
     expect(response.status).toBe(401);
     expect(response.body.error).toBe('Past dates are not allowed.');
   });
+
+  it('should list all meetups', async () => {
+    const user = await factory.attrs('User');
+
+    const userResponse = await request(app)
+      .post('/users')
+      .send(user);
+
+    const { id } = userResponse.body;
+
+    const token = jwt.sign({ id }, authConfig.secret, {
+      expiresIn: authConfig.expiresIn,
+    });
+
+    const response = await request(app)
+      .get('/meetups')
+      .set('Authorization', `Bearer ${token}`)
+      .send();
+
+    expect(response.body).toEqual(expect.arrayContaining([]));
+  });
+
+  it('should list only meetups after a given date', async () => {
+    const user = await factory.attrs('User');
+
+    const userResponse = await request(app)
+      .post('/users')
+      .send(user);
+
+    const { id } = userResponse.body;
+
+    const token = jwt.sign({ id }, authConfig.secret, {
+      expiresIn: authConfig.expiresIn,
+    });
+
+    const date = faker.date.soon;
+
+    const response = await request(app)
+      .get(`/meetups?date=${date}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(response.body.length).toBe(0);
+  });
 });
