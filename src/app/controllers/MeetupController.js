@@ -95,20 +95,13 @@ class MeetupController {
         .json({ error: "You don't have permission to edit this meetup." });
     }
 
-    const { title, description, location, date, banner_id } = req.body;
+    const { date } = req.body;
 
     if (isBefore(parse(date), new Date())) {
       return res.status(401).json({ error: 'Past dates are not allowed.' });
     }
 
-    const meetupUpdated = await Meetup.create({
-      title,
-      description,
-      location,
-      date,
-      banner_id,
-      user_id: req.userId,
-    });
+    const meetupUpdated = await meetup.update(req.body);
 
     return res.json(meetupUpdated);
   }
