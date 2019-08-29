@@ -1,4 +1,4 @@
-import { isBefore, parse, startOfDay, endOfDay } from 'date-fns';
+import { isBefore, parse, startOfDay, endOfDay, isPast } from 'date-fns';
 import * as yup from 'yup';
 import { Op } from 'sequelize';
 
@@ -93,6 +93,12 @@ class MeetupController {
       return res
         .status(401)
         .json({ error: "You don't have permission to edit this meetup." });
+    }
+
+    if (isPast(parse(meetup.date))) {
+      return res
+        .status(401)
+        .json({ error: "You can't edit meetups that have already happened." });
     }
 
     const { date } = req.body;
