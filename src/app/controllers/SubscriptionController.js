@@ -11,10 +11,14 @@ import File from '../models/File';
 
 class SubscriptionController {
   async index(req, res) {
+    const page = req.query.page || 1;
+
     const subscriptions = await Subscription.findAll({
       where: {
         user_id: req.userId,
       },
+      limit: 10,
+      offset: (page - 1) * 10,
       attributes: ['id'],
       include: [
         {
