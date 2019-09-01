@@ -19,7 +19,7 @@ class MeetupController {
       };
     }
 
-    const meetups = await Meetup.findAll({
+    const meetups = await Meetup.findAndCountAll({
       where,
       limit: 10,
       offset: (page - 1) * 10,
@@ -36,7 +36,9 @@ class MeetupController {
       ],
     });
 
-    return res.json(meetups);
+    res.set('x-total-count', meetups.count);
+
+    return res.json(meetups.rows);
   }
 
   async store(req, res) {

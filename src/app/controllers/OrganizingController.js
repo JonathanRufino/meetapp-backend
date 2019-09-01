@@ -5,7 +5,7 @@ class OrganizingController {
   async index(req, res) {
     const page = req.query.page || 1;
 
-    const userMeetups = await Meetup.findAll({
+    const userMeetups = await Meetup.findAndCountAll({
       where: { user_id: req.userId },
       limit: 10,
       offset: (page - 1) * 10,
@@ -19,7 +19,9 @@ class OrganizingController {
       ],
     });
 
-    return res.json(userMeetups);
+    res.set('x-total-count', userMeetups.count);
+
+    return res.json(userMeetups.rows);
   }
 }
 

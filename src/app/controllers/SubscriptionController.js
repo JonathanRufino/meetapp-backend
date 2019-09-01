@@ -13,7 +13,7 @@ class SubscriptionController {
   async index(req, res) {
     const page = req.query.page || 1;
 
-    const subscriptions = await Subscription.findAll({
+    const subscriptions = await Subscription.findAndCountAll({
       where: {
         user_id: req.userId,
       },
@@ -48,7 +48,9 @@ class SubscriptionController {
       order: [['meetup', 'date']],
     });
 
-    return res.json(subscriptions);
+    res.set('x-total-count', subscriptions.count);
+
+    return res.json(subscriptions.rows);
   }
 
   async store(req, res) {
