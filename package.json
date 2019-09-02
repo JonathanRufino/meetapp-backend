@@ -1,8 +1,11 @@
 {
-  "name": "meetapp-backend",
+  "name": "jonathanrufino-meetapp-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": false,
+  "description": "Backend module for the Rocketseat's Bootcamp challenge",
+  "author": "Jonathan Rufino <jonathanrufinopaiva@gmail.com>",
   "license": "MIT",
+  "main": "index.js",
   "scripts": {
     "dev": "nodemon src/server.js",
     "queue": "nodemon src/queue.js",
