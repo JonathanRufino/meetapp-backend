@@ -1,5 +1,6 @@
 import './bootstrap';
 import express from 'express';
+import createLocaleMiddleware from 'express-locale';
 import path from 'path';
 import cors from 'cors';
 import Youch from 'youch';
@@ -33,6 +34,12 @@ class App {
     this.server.use(
       '/files',
       express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
+    );
+    this.server.use(
+      createLocaleMiddleware({
+        priority: ['accept-language', 'default'],
+        default: 'pt-BR',
+      })
     );
   }
 

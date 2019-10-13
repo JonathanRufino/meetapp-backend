@@ -9,11 +9,14 @@ import SubscriptionController from './app/controllers/SubscriptionController';
 import OrganizingController from './app/controllers/OrganizingController';
 
 import authMiddleware from './app/middlewares/auth';
+import polyglotMiddleware from './app/middlewares/polyglot';
 
 import multerConfig from './config/multer';
 
 const routes = new Router();
 const upload = multer(multerConfig);
+
+routes.use(polyglotMiddleware);
 
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
