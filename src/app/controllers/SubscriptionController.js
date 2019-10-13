@@ -54,6 +54,7 @@ class SubscriptionController {
   }
 
   async store(req, res) {
+    const { polyglot } = req;
     const user = await User.findByPk(req.userId);
 
     const meetup = await Meetup.findByPk(req.params.meetupId, {
@@ -67,17 +68,21 @@ class SubscriptionController {
     });
 
     if (!meetup) {
-      return res.status(400).json({ error: 'Meetup not found.' });
+      return res
+        .status(400)
+        .json({ error: polyglot.t('subscription.meetup_not_found') });
     }
 
     if (meetup.user_id === user.id) {
-      return res
-        .status(401)
-        .json({ error: "Can't subscribe to your own meetup." });
+      return res.status(401).json({
+        error: polyglot.t('subscription.cant_subscribe_to_own_meetup'),
+      });
     }
 
     if (isBefore(parse(meetup.date), new Date())) {
-      return res.status(401).json({ error: 'This meetup has already ended.' });
+      return res
+        .status(401)
+        .json({ error: polyglot.t('subscription.meetup_ended') });
     }
 
     const hasSubscription = await Subscription.findOne({
@@ -87,7 +92,7 @@ class SubscriptionController {
     if (hasSubscription) {
       return res
         .status(401)
-        .json({ error: 'Already subscribed for this meetup.' });
+        .json({ error: polyglot.t('subscription.already_subscribed') });
     }
 
     const hasSubscriptionSameTime = await Subscription.findOne({
@@ -104,7 +109,9 @@ class SubscriptionController {
 
     if (hasSubscriptionSameTime) {
       return res.status(401).json({
-        error: "Can't subscribe to two meetups at the same time",
+        error: polyglot.t(
+          'subscription.cant_subscribe_to_meetups_at_same_time'
+        ),
       });
     }
 
@@ -122,6 +129,7 @@ class SubscriptionController {
   }
 
   async delete(req, res) {
+    const { polyglot } = req;
     const subscription = await Subscription.findByPk(req.params.id, {
       include: [
         {
@@ -133,19 +141,22 @@ class SubscriptionController {
     });
 
     if (!subscription) {
-      return res.status(404).json({ error: 'Subscription not found' });
+      return res
+        .status(404)
+        .json({ error: polyglot.t('subscription.subscription_not_found') });
     }
 
     if (subscription.user_id !== req.userId) {
       return res.status(401).json({
-        error: "You don't have permission to cancel this subscription.",
+        error: polyglot.t(
+          'subscription.permission_required_to_cancel_subscription'
+        ),
       });
     }
 
     if (isBefore(parse(subscription.meetup.date), new Date())) {
       return res.status(401).json({
-        error:
-          "You can't cancel subscriptions to events that have already happened.",
+        error: polyglot.t('subscription.cant_cancel_past_subscriptions'),
       });
     }
 

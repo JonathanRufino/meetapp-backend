@@ -6,6 +6,8 @@ import User from '../models/User';
 
 class SessionController {
   async store(req, res) {
+    const { polyglot } = req;
+
     const schema = Yup.object().shape({
       email: Yup.string()
         .email()
@@ -14,7 +16,9 @@ class SessionController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation failed.' });
+      return res
+        .status(400)
+        .json({ error: polyglot.t('session.validation_failed') });
     }
 
     const { email, password } = req.body;
@@ -22,11 +26,15 @@ class SessionController {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(401).json({ error: 'User not found.' });
+      return res
+        .status(401)
+        .json({ error: polyglot.t('session.user_not_found') });
     }
 
     if (!(await user.checkPassword(password))) {
-      return res.status(401).json({ error: 'Password does not match.' });
+      return res
+        .status(401)
+        .json({ error: polyglot.t('session.password_dont_match') });
     }
 
     const { id, name } = user;

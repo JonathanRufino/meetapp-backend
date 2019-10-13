@@ -4,6 +4,7 @@ import User from '../models/User';
 
 class UserController {
   async store(req, res) {
+    const { polyglot } = req;
     const schema = Yup.object().shape({
       name: Yup.string().required(),
       email: Yup.string()
@@ -15,13 +16,17 @@ class UserController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation failed.' });
+      return res
+        .status(400)
+        .json({ error: polyglot.t('user.validation_failed') });
     }
 
     const userExists = await User.findOne({ where: { email: req.body.email } });
 
     if (userExists) {
-      return res.status(400).json({ error: 'User already exists.' });
+      return res
+        .status(400)
+        .json({ error: polyglot.t('user.user_already_exists') });
     }
 
     const { id, name, email } = await User.create(req.body);
@@ -34,6 +39,7 @@ class UserController {
   }
 
   async update(req, res) {
+    const { polyglot } = req;
     const schema = Yup.object().shape({
       name: Yup.string(),
       email: Yup.string().email(),
@@ -49,7 +55,9 @@ class UserController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation failed.' });
+      return res
+        .status(400)
+        .json({ error: polyglot.t('user.validation_failed') });
     }
 
     const { email, oldPassword } = req.body;
@@ -60,12 +68,16 @@ class UserController {
       const userExists = await User.findOne({ where: { email } });
 
       if (userExists) {
-        return res.status(400).json({ error: 'User already exists.' });
+        return res
+          .status(400)
+          .json({ error: polyglot.t('user.user_already_exists') });
       }
     }
 
     if (oldPassword && !(await user.checkPassword(oldPassword))) {
-      return res.status(401).json({ error: 'Password does not match.' });
+      return res
+        .status(401)
+        .json({ error: polyglot.t('user.password_dont_match') });
     }
 
     const { id, name, email: userEmail } = await user.update(req.body);

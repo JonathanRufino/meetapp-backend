@@ -42,6 +42,7 @@ class MeetupController {
   }
 
   async store(req, res) {
+    const { polyglot } = req;
     const schema = yup.object().shape({
       title: yup.string().required(),
       description: yup.string().required(),
@@ -51,13 +52,17 @@ class MeetupController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation failed.' });
+      return res
+        .status(400)
+        .json({ error: polyglot.t('meetup.validation_failed') });
     }
 
     const { title, description, location, date, banner_id } = req.body;
 
     if (isBefore(parse(date), new Date())) {
-      return res.status(401).json({ error: 'Past dates are not allowed.' });
+      return res
+        .status(401)
+        .json({ error: polyglot.t('meetup.past_date_not_allowed') });
     }
 
     try {
@@ -72,11 +77,14 @@ class MeetupController {
 
       return res.json(meetup);
     } catch (err) {
-      return res.status(400).json({ error: 'Invalid banner.' });
+      return res
+        .status(400)
+        .json({ error: polyglot.t('meetup.invalid_image') });
     }
   }
 
   async update(req, res) {
+    const { polyglot } = req;
     const schema = yup.object().shape({
       title: yup.string().required(),
       description: yup.string().required(),
@@ -86,27 +94,33 @@ class MeetupController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation failed.' });
+      return res
+        .status(400)
+        .json({ error: polyglot.t('meetup.validation_failed') });
     }
+
+    // TODO: Check if banner_id is a valid banner
 
     const meetup = await Meetup.findByPk(req.params.id);
 
     if (meetup.user_id !== req.userId) {
       return res
         .status(401)
-        .json({ error: "You don't have permission to edit this meetup." });
+        .json({ error: polyglot.t('meetup.permission_required_to_edit') });
     }
 
     if (isPast(parse(meetup.date))) {
       return res
         .status(401)
-        .json({ error: "You can't edit meetups that have already happened." });
+        .json({ error: polyglot.t('meetup.cant_edit_past_meetup') });
     }
 
     const { date } = req.body;
 
     if (isBefore(parse(date), new Date())) {
-      return res.status(401).json({ error: 'Past dates are not allowed.' });
+      return res
+        .status(401)
+        .json({ error: polyglot.t('meetup.past_date_not_allowed') });
     }
 
     const meetupUpdated = await meetup.update(req.body);
@@ -115,18 +129,19 @@ class MeetupController {
   }
 
   async delete(req, res) {
+    const { polyglot } = req;
     const meetup = await Meetup.findByPk(req.params.id);
 
     if (meetup.user_id !== req.userId) {
       return res
         .status(401)
-        .json({ error: "You don't have permission to cancel this meetup." });
+        .json({ error: polyglot.t('meetup.permission_required_to_cancel') });
     }
 
     if (isBefore(parse(meetup.date), new Date())) {
       return res
         .status(401)
-        .json({ error: "You can't cancel events that have already happened." });
+        .json({ error: polyglot.t('meetup.cant_cancel_past_meetup') });
     }
 
     await meetup.destroy();

@@ -4,10 +4,11 @@ import { promisify } from 'util';
 import authConfig from '../../config/auth';
 
 export default async (req, res, next) => {
+  const { polyglot } = req;
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({ error: 'Token not provided.' });
+    return res.status(401).json({ error: polyglot.t('auth.token_missing') });
   }
 
   const [, token] = authHeader.split(' ');
@@ -19,6 +20,6 @@ export default async (req, res, next) => {
 
     return next();
   } catch (err) {
-    return res.status(401).json({ error: 'Token invalid.' });
+    return res.status(401).json({ error: polyglot.t('auth.invalid_token') });
   }
 };
