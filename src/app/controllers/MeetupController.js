@@ -59,28 +59,28 @@ class MeetupController {
 
     const { title, description, location, date, banner_id } = req.body;
 
+    if (!(await File.findByPk(banner_id))) {
+      return res
+        .status(400)
+        .json({ error: polyglot.t('meetup.invalid_image') });
+    }
+
     if (isBefore(parse(date), new Date())) {
       return res
         .status(401)
         .json({ error: polyglot.t('meetup.past_date_not_allowed') });
     }
 
-    try {
-      const meetup = await Meetup.create({
-        title,
-        description,
-        location,
-        date,
-        banner_id,
-        user_id: req.userId,
-      });
+    const meetup = await Meetup.create({
+      title,
+      description,
+      location,
+      date,
+      banner_id,
+      user_id: req.userId,
+    });
 
-      return res.json(meetup);
-    } catch (err) {
-      return res
-        .status(400)
-        .json({ error: polyglot.t('meetup.invalid_image') });
-    }
+    return res.json(meetup);
   }
 
   async update(req, res) {
@@ -99,7 +99,13 @@ class MeetupController {
         .json({ error: polyglot.t('meetup.validation_failed') });
     }
 
-    // TODO: Check if banner_id is a valid banner
+    const { banner_id } = req.body;
+
+    if (!(await File.findByPk(banner_id))) {
+      return res
+        .status(400)
+        .json({ error: polyglot.t('meetup.invalid_image') });
+    }
 
     const meetup = await Meetup.findByPk(req.params.id);
 
