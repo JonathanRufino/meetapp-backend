@@ -18,6 +18,40 @@ const upload = multer(multerConfig);
 
 routes.use(polyglotMiddleware);
 
+/**
+ * @swagger
+ *
+ * /users:
+ *  post:
+ *    name: Create User
+ *    summary: Creates a new user
+ *    tags:
+ *      - Users
+ *    produces:
+ *      - application/json
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - name: body
+ *        in: body
+ *        schema:
+ *          type: object
+ *          properties:
+ *            name:
+ *              type: string
+ *            email:
+ *              type: string
+ *            password:
+ *              type: string
+ *              format: password
+ *    responses:
+ *      '201':
+ *        description: User created
+ *      '400':
+ *        description: Invalid data
+ *      '409':
+ *        description: User already exists
+ */
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
 

@@ -25,13 +25,13 @@ class UserController {
 
     if (userExists) {
       return res
-        .status(400)
+        .status(409)
         .json({ error: polyglot.t('user.user_already_exists') });
     }
 
     const { id, name, email } = await User.create(req.body);
 
-    return res.json({
+    return res.status(201).json({
       id,
       name,
       email,
