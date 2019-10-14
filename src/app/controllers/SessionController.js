@@ -27,7 +27,7 @@ class SessionController {
 
     if (!user) {
       return res
-        .status(401)
+        .status(404)
         .json({ error: polyglot.t('session.user_not_found') });
     }
 

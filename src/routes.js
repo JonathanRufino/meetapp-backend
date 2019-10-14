@@ -53,6 +53,41 @@ routes.use(polyglotMiddleware);
  *        description: User already exists
  */
 routes.post('/users', UserController.store);
+
+/**
+ * @swagger
+ *
+ * /sessions:
+ *  post:
+ *    name: Login
+ *    summary: Authenticates user
+ *    tags:
+ *      - Auth
+ *    produces:
+ *      - application/json
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - name: body
+ *        in: body
+ *        schema:
+ *          type: object
+ *          properties:
+ *            email:
+ *              type: string
+ *              format: email
+ *            password:
+ *              type: string
+ *    responses:
+ *      200:
+ *        description: User authenticated
+ *      400:
+ *        description: Invalid data
+ *      401:
+ *        description: Wrong password
+ *      404:
+ *        description: User not found
+ */
 routes.post('/sessions', SessionController.store);
 
 routes.use(authMiddleware);
