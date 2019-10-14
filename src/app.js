@@ -5,11 +5,13 @@ import path from 'path';
 import cors from 'cors';
 import Youch from 'youch';
 import * as Sentry from '@sentry/node';
+import swaggerUi from 'swagger-ui-express';
 import 'express-async-errors';
 
 import routes from './routes';
 
 import sentryConfig from './config/sentry';
+import swaggerConfig from './config/swagger';
 import './database';
 
 class App {
@@ -40,6 +42,11 @@ class App {
         priority: ['accept-language', 'default'],
         default: 'pt-BR',
       })
+    );
+    this.server.use(
+      '/api-docs',
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerConfig)
     );
   }
 
