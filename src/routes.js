@@ -166,6 +166,29 @@ routes.get('/organizing', OrganizingController.index);
 routes.get('/subscriptions', SubscriptionController.index);
 routes.delete('/subscriptions/:id', SubscriptionController.delete);
 
+/**
+ * @swagger
+ *
+ * /files:
+ *  post:
+ *    name: Image
+ *    summary: Uploads an image
+ *    tags:
+ *      - Files
+ *    produces:
+ *      - application/json
+ *    consumes:
+ *      - multipart/form-data
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - in: formData
+ *        name: file
+ *        type: file
+ *    responses:
+ *      201:
+ *        description: File uploaded
+ */
 routes.post('/files', upload.single('file'), FileController.store);
 
 export default routes;
