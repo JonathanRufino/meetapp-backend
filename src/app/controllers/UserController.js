@@ -40,6 +40,8 @@ class UserController {
 
   async update(req, res) {
     const { polyglot } = req;
+
+    // TODO: Email should not be updatable
     const schema = Yup.object().shape({
       name: Yup.string(),
       email: Yup.string().email(),
@@ -69,7 +71,7 @@ class UserController {
 
       if (userExists) {
         return res
-          .status(400)
+          .status(409)
           .json({ error: polyglot.t('user.user_already_exists') });
       }
     }

@@ -92,6 +92,47 @@ routes.post('/sessions', SessionController.store);
 
 routes.use(authMiddleware);
 
+/**
+ * @swagger
+ *
+ * /users:
+ *  put:
+ *    name: Update User
+ *    summary: Updates an existing user
+ *    tags:
+ *      - Users
+ *    produces:
+ *      - application/json
+ *    consumes:
+ *      - application/json
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - name: body
+ *        in: body
+ *        schema:
+ *          type: object
+ *          properties:
+ *            name:
+ *              type: string
+ *            email:
+ *              type: string
+ *            oldPassword:
+ *              type: string
+ *            password:
+ *              type: string
+ *            confirmPassword:
+ *              type: string
+ *    responses:
+ *      200:
+ *        description: User updated
+ *      400:
+ *        description: Invalid data
+ *      401:
+ *        description: Password doesn't match
+ *      409:
+ *        description: Email already in use by another user
+ */
 routes.put('/users', UserController.update);
 
 routes.get('/meetups', MeetupController.index);
