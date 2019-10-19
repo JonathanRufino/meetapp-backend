@@ -67,7 +67,7 @@ class MeetupController {
 
     if (isBefore(parse(date), new Date())) {
       return res
-        .status(401)
+        .status(400)
         .json({ error: polyglot.t('meetup.past_date_not_allowed') });
     }
 
@@ -80,7 +80,7 @@ class MeetupController {
       user_id: req.userId,
     });
 
-    return res.json(meetup);
+    return res.status(201).json(meetup);
   }
 
   async update(req, res) {

@@ -155,6 +155,47 @@ routes.put('/users', UserController.update);
  *        description: OK
  */
 routes.get('/meetups', MeetupController.index);
+
+/**
+ * @swagger
+ *
+ * /meetups:
+ *  post:
+ *    name: Create Meetup
+ *    summary: Creates a new meetup
+ *    tags:
+ *      - Meetups
+ *    produces:
+ *      - application/json
+ *    consumes:
+ *      - application/json
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - name: body
+ *        in: body
+ *        schema:
+ *          type: object
+ *          required:
+ *            - title
+ *          properties:
+ *            title:
+ *              type: string
+ *            description:
+ *              type: string
+ *            location:
+ *              type: string
+ *            date:
+ *              type: string
+ *              format: date-time
+ *            banner_id:
+ *              type: integer
+ *    responses:
+ *      201:
+ *        description: Meetup created
+ *      400:
+ *        description: Invalid data
+ */
 routes.post('/meetups', MeetupController.store);
 routes.put('/meetups/:id', MeetupController.update);
 routes.delete('/meetups/:id', MeetupController.delete);
