@@ -135,6 +135,25 @@ routes.use(authMiddleware);
  */
 routes.put('/users', UserController.update);
 
+/**
+ * @swagger
+ *
+ * /meetups:
+ *  get:
+ *    name: List Meetups
+ *    summary: List all available meetups
+ *    tags:
+ *      - Meetups
+ *    produces:
+ *      - application/json
+ *    consumes:
+ *      - application/json
+ *    security:
+ *      - bearerAuth: []
+ *    responses:
+ *      200:
+ *        description: OK
+ */
 routes.get('/meetups', MeetupController.index);
 routes.post('/meetups', MeetupController.store);
 routes.put('/meetups/:id', MeetupController.update);
