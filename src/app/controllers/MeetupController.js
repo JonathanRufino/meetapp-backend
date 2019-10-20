@@ -140,13 +140,13 @@ class MeetupController {
 
     if (meetup.user_id !== req.userId) {
       return res
-        .status(401)
+        .status(403)
         .json({ error: polyglot.t('meetup.permission_required_to_cancel') });
     }
 
     if (isBefore(parse(meetup.date), new Date())) {
       return res
-        .status(401)
+        .status(400)
         .json({ error: polyglot.t('meetup.cant_cancel_past_meetup') });
     }
 

@@ -244,6 +244,36 @@ routes.post('/meetups', MeetupController.store);
  *        description: You don't have permission to access this
  */
 routes.put('/meetups/:id', MeetupController.update);
+
+/**
+ * @swagger
+ *
+ * /meetups/{id}:
+ *  delete:
+ *    name: Delete Meetup
+ *    summary: Deletes an meetup with the specified ID
+ *    tags:
+ *      - Meetups
+ *    produces:
+ *      - application/json
+ *    consumes:
+ *      - application/json
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: Meetup ID
+ *        type: integer
+ *        required: true
+ *    responses:
+ *      200:
+ *        description: Meetup deleted
+ *      400:
+ *        description: Can't cancel past meetups
+ *      403:
+ *        description: You don't have permission to access this
+ */
 routes.delete('/meetups/:id', MeetupController.delete);
 
 routes.post('/meetups/:meetupId/subscriptions', SubscriptionController.store);
