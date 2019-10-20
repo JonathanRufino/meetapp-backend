@@ -147,7 +147,7 @@ class SubscriptionController {
     }
 
     if (subscription.user_id !== req.userId) {
-      return res.status(401).json({
+      return res.status(403).json({
         error: polyglot.t(
           'subscription.permission_required_to_cancel_subscription'
         ),
@@ -155,7 +155,7 @@ class SubscriptionController {
     }
 
     if (isBefore(parse(subscription.meetup.date), new Date())) {
-      return res.status(401).json({
+      return res.status(400).json({
         error: polyglot.t('subscription.cant_cancel_past_subscriptions'),
       });
     }

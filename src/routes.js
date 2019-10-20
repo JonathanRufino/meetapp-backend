@@ -331,6 +331,38 @@ routes.get('/organizing', OrganizingController.index);
  *        description: OK
  */
 routes.get('/subscriptions', SubscriptionController.index);
+
+/**
+ * @swagger
+ *
+ * /subscriptions/{id}:
+ *  delete:
+ *    name: Delete Subscription
+ *    summary: Deletes an subscription with the specified ID
+ *    tags:
+ *      - Subscriptions
+ *    produces:
+ *      - application/json
+ *    consumes:
+ *      - application/json
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: Subscription ID
+ *        type: integer
+ *        required: true
+ *    responses:
+ *      200:
+ *        description: Subscription deleted
+ *      400:
+ *        description: Can't cancel past subscriptions
+ *      403:
+ *        description: You don't have permission to access this
+ *      404:
+ *        description: Subscription not found
+ */
 routes.delete('/subscriptions/:id', SubscriptionController.delete);
 
 /**
