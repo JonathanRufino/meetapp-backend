@@ -276,6 +276,37 @@ routes.put('/meetups/:id', MeetupController.update);
  */
 routes.delete('/meetups/:id', MeetupController.delete);
 
+/**
+ * @swagger
+ *
+ * /meetups/{id}/subscriptions:
+ *  post:
+ *    name: Subscribe to Meetup
+ *    summary: Subscribes to a meetup with the specified ID
+ *    tags:
+ *      - Subscriptions
+ *    produces:
+ *      - application/json
+ *    consumes:
+ *      - application/json
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: Meetup ID
+ *        type: integer
+ *        required: true
+ *    responses:
+ *      201:
+ *        description: Subscription created
+ *      400:
+ *        description: Multiple possibilities, see error message
+ *      404:
+ *        description: Meetup not found
+ *      409:
+ *        description: Already subscribed
+ */
 routes.post('/meetups/:meetupId/subscriptions', SubscriptionController.store);
 
 routes.get('/organizing', OrganizingController.index);

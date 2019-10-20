@@ -69,19 +69,19 @@ class SubscriptionController {
 
     if (!meetup) {
       return res
-        .status(400)
+        .status(404)
         .json({ error: polyglot.t('subscription.meetup_not_found') });
     }
 
     if (meetup.user_id === user.id) {
-      return res.status(401).json({
+      return res.status(400).json({
         error: polyglot.t('subscription.cant_subscribe_to_own_meetup'),
       });
     }
 
     if (isBefore(parse(meetup.date), new Date())) {
       return res
-        .status(401)
+        .status(400)
         .json({ error: polyglot.t('subscription.meetup_ended') });
     }
 
@@ -91,7 +91,7 @@ class SubscriptionController {
 
     if (hasSubscription) {
       return res
-        .status(401)
+        .status(409)
         .json({ error: polyglot.t('subscription.already_subscribed') });
     }
 
@@ -108,7 +108,7 @@ class SubscriptionController {
     });
 
     if (hasSubscriptionSameTime) {
-      return res.status(401).json({
+      return res.status(400).json({
         error: polyglot.t(
           'subscription.cant_subscribe_to_meetups_at_same_time'
         ),
@@ -125,7 +125,7 @@ class SubscriptionController {
       user,
     });
 
-    return res.json(subscription);
+    return res.status(201).json(subscription);
   }
 
   async delete(req, res) {
