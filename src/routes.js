@@ -309,6 +309,25 @@ routes.delete('/meetups/:id', MeetupController.delete);
  */
 routes.post('/meetups/:meetupId/subscriptions', SubscriptionController.store);
 
+/**
+ * @swagger
+ *
+ * /organizing:
+ *  get:
+ *    name: List Organizings
+ *    summary: List all meetups organized by the connected user
+ *    tags:
+ *      - Organizings
+ *    produces:
+ *      - application/json
+ *    consumes:
+ *      - application/json
+ *    security:
+ *      - bearerAuth: []
+ *    responses:
+ *      200:
+ *        description: OK
+ */
 routes.get('/organizing', OrganizingController.index);
 
 /**
