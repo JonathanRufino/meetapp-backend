@@ -111,13 +111,13 @@ class MeetupController {
 
     if (meetup.user_id !== req.userId) {
       return res
-        .status(401)
+        .status(403)
         .json({ error: polyglot.t('meetup.permission_required_to_edit') });
     }
 
     if (isPast(parse(meetup.date))) {
       return res
-        .status(401)
+        .status(400)
         .json({ error: polyglot.t('meetup.cant_edit_past_meetup') });
     }
 
@@ -125,7 +125,7 @@ class MeetupController {
 
     if (isBefore(parse(date), new Date())) {
       return res
-        .status(401)
+        .status(400)
         .json({ error: polyglot.t('meetup.past_date_not_allowed') });
     }
 

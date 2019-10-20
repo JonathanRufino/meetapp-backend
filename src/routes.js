@@ -197,6 +197,52 @@ routes.get('/meetups', MeetupController.index);
  *        description: Invalid data
  */
 routes.post('/meetups', MeetupController.store);
+
+/**
+ * @swagger
+ *
+ * /meetups/{id}:
+ *  put:
+ *    name: Update Meetup
+ *    summary: Updates an meetup with the specified ID
+ *    tags:
+ *      - Meetups
+ *    produces:
+ *      - application/json
+ *    consumes:
+ *      - application/json
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: Meetup ID
+ *        type: integer
+ *        required: true
+ *      - name: body
+ *        in: body
+ *        schema:
+ *          type: object
+ *          properties:
+ *            title:
+ *              type: string
+ *            description:
+ *              type: string
+ *            location:
+ *              type: string
+ *            date:
+ *              type: string
+ *              format: date-time
+ *            banner_id:
+ *              type: integer
+ *    responses:
+ *      200:
+ *        description: Meetup updated
+ *      400:
+ *        description: Invalid data
+ *      403:
+ *        description: You don't have permission to access this
+ */
 routes.put('/meetups/:id', MeetupController.update);
 routes.delete('/meetups/:id', MeetupController.delete);
 
